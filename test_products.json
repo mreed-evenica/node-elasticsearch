@@ -1,0 +1,20 @@
+[
+  {
+    "id": "prod_001",
+    "RecordId": 1,
+    "name": "Sample Product 1",
+    "price": 29.99,
+    "rules": {
+      "isActiveInSalesProcess": true
+    }
+  },
+  {
+    "id": "prod_002", 
+    "RecordId": 2,
+    "name": "Sample Product 2",
+    "price": 49.99,
+    "rules": {
+      "isActiveInSalesProcess": true
+    }
+  }
+]
