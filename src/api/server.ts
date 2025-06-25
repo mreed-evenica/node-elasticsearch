@@ -1,12 +1,12 @@
-import Koa from 'koa';
-import Router from 'koa-router';
-import bodyParser from 'koa-bodyparser';
 import cors from '@koa/cors';
-import swaggerJSDoc from 'swagger-jsdoc';
-import { koaSwagger } from 'koa2-swagger-ui';
-import { ElasticClientProvider } from '../core/client/elasticClientProvider';
-import blueGreenRoutes from './blueGreenRoutes';
+import Koa from 'koa';
+import bodyParser from 'koa-bodyparser';
 import mount from 'koa-mount';
+import Router from 'koa-router';
+import { koaSwagger } from 'koa2-swagger-ui';
+import swaggerJSDoc from 'swagger-jsdoc';
+import { ElasticClientProvider } from '../core/client/elasticClientProvider';
+import v1Router from './v1';
 
 const app = new Koa();
 const router = new Router();
@@ -33,7 +33,8 @@ const swaggerSpec = swaggerJSDoc({
     ]
   },
   apis: [
-    './src/api/blueGreenRoutes.ts'
+    './src/api/blueGreenRoutes.ts',
+    './src/api/v1/*.ts'
   ]
 });
 
@@ -94,9 +95,13 @@ router.get('/health', async (ctx) => {
   }
 });
 
-// Mount blue/green routes under /api
-app.use(mount('/api', blueGreenRoutes.routes()));
-app.use(mount('/api', blueGreenRoutes.allowedMethods()));
+// // Mount blue/green routes under /api
+// app.use(mount('/api', blueGreenRoutes.routes()));
+// app.use(mount('/api', blueGreenRoutes.allowedMethods()));
+
+// Mount v1 API routes under /api
+app.use(mount('/api', v1Router.routes()));
+app.use(mount('/api', v1Router.allowedMethods()));
 
 // Mount health check route under /api
 app.use(mount('/api', router.routes()));

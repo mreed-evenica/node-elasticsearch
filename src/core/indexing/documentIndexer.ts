@@ -1,6 +1,6 @@
 import { IElasticClientProvider } from '../client/elasticClientProvider';
 import { IAliasManager } from '../management/aliasManager';
-import { ElasticsearchException, BulkResponse, IndexResponse, UpdateResponse, DeleteResponse } from '../types';
+import { BulkResponse, DeleteResponse, ElasticsearchException, IndexResponse, UpdateResponse } from '../types';
 
 /**
  * Interface for document indexing operations
@@ -20,7 +20,7 @@ export class DocumentIndexer<T> implements IDocumentIndexer<T> {
   constructor(
     private readonly clientProvider: IElasticClientProvider,
     private readonly aliasManager?: IAliasManager
-  ) {}
+  ) { }
 
   /**
    * Gets the Elasticsearch client
@@ -57,7 +57,7 @@ export class DocumentIndexer<T> implements IDocumentIndexer<T> {
       // Process in batches
       for (let i = 0; i < documents.length; i += batchSize) {
         const batch = documents.slice(i, i + batchSize);
-        
+
         const body = batch.flatMap(doc => [
           { index: { _index: resolvedIndexName } },
           doc
